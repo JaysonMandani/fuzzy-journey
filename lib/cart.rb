@@ -12,20 +12,22 @@ class Cart
     items << item
   end
 
-  def total
-    items.map(&:item_with_tax).reduce(:+)
+  def total_sales
+    format('%.2f', items.map(&:item_with_tax).map(&:to_f).sum)
   end
 
-  def computed_tax
-    items.map(&:tax).reduce(:+)
+  def total_taxes
+    format('%.2f', items.map(&:computed_tax).map(&:to_f).sum)
   end
 
   def show_receipt
     string = ''
     items.each do |item|
-      string.concat item.show
+      string.concat item.details
       string.concat("\n")
     end
+    string.concat("\nSales Taxes: #{total_taxes}")
+    string.concat("\nTotal: #{total_sales}\n")
     string
   end
 end
